@@ -7,28 +7,7 @@ int main()
   int y;
 
   cin >> x >> y;
-
-  if (x>0)
-  {
-    if (y>0)
-    {
-      cout << 1;
-    }
-    else
-    {
-      cout << 4;
-    }
-  }
-  else if (x<0)
-  {{
-    if (y>0)
-    {
-      cout << 2;
-    }
-    else
-    {
-      cout << 3;
-    }
-  }}
+  cout <<(x>0? (y>0? 1:4):(y>0? 2:3));
+  
   return 0;
 }
