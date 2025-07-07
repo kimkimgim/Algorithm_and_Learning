@@ -1,20 +1,17 @@
 import sys
 
-n, m = map(int, sys.stdin.readline().split())
-result = []
+n,m = map(int, sys.stdin.readline().split())
+s = []
+def back():
 
-def backtracking():
-
-    if len(result) == m:
-        print(' '.join(map(str,result)))
+    if len(s) == m:
+        print(' '.join(map(str, s)))
         return
 
     for i in range(1, n+1):
-        if i not in result:
-            result.append(i)
-            backtracking()
-            result.pop()
+        if i not in s:
+            s.append(i)
+            back()
+            s.pop()
 
-backtracking()
-
-
+back()
