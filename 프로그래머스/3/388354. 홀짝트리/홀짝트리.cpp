@@ -1,71 +1,43 @@
+#include <iostream>
 #include <string>
 #include <vector>
-#include <queue>
- 
+#include <map>
+
 using namespace std;
- 
-vector<int> m[1000001];
-bool visited[1000001];
- 
-int check(int num, int size, int cur){
-    if(num%2 == size%2) {
-        if(cur==2)
-        {
-            return -1;
-        }
-        return 1;
-    }
-    else if(num%2 != size%2) {
-        if(cur==1)
-        {
-            return -1;
-        }
-        return 2;
-    }
+
+map<int, int> par;
+
+int getPar(int cur) {
+    if (cur != par[cur]) par[cur] = getPar(par[cur]);
+    return par[cur];
 }
- 
-int bfs(int r){
-    queue<int> q;
-    q.push(r);
-    visited[r]=true;
-    int checkNode = 0;
-    checkNode = check(r, m[r].size(), checkNode);
-    
-    while(!q.empty())
-    {
-        int nxt = q.front();
-        q.pop();
-        
-        for(int mm : m[nxt])
-        {
-            if(!visited[mm])
-            {
-                q.push(mm);
-                visited[mm]=true;
-                checkNode = check(mm, m[mm].size()-1, checkNode);
-                if(checkNode==-1) return -1;
-            }
-        }
-    }
-    
-    return checkNode;
-}
- 
+
 vector<int> solution(vector<int> nodes, vector<vector<int>> edges) {
-    vector<int> answer = {0,0};
-    
-    for(auto edge : edges)
-    {
-        m[edge[0]].push_back(edge[1]);
-        m[edge[1]].push_back(edge[0]);
+    vector<int> answer(2, 0);
+    map<int, int> m;
+    map<int, pair<int, int>> tree;
+
+    for (auto i : nodes) par[i] = i;
+    for (auto i : edges) { 
+        m[i[0]]++; m[i[1]]++;
+        int par0 = getPar(i[0]), par1 = getPar(i[1]);
+        if      (par0 < par1) { par[par1] = par0; (void)getPar(i[1]); }
+        else if (par0 > par1) { par[par0] = par1; (void)getPar(i[0]); }
     }
-    
-    for(int root : nodes)
-    {
-        int idx = bfs(root);
-        if(idx != -1) answer[idx-1]++;
-        fill(visited, visited+1000001, false);
+    for (auto i : par) {
+        int p = getPar(i.second);
+        if (m[i.first] % 2 == i.first % 2) {
+            tree[p].first++;
+        } else {
+            tree[p].second++;
+        }
     }
-    
+    for (auto i : tree) {
+        if (i.second.first == 1) answer[0]++;
+        if (i.second.second == 1) answer[1]++;
+    }
+
+
+
     return answer;
 }
