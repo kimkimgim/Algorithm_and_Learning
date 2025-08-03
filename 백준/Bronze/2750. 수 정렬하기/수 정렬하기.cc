@@ -2,29 +2,24 @@
 #include <vector>
 using namespace std;
 
-// 선택정렬
-// 제일 큰 값을 기준으로 정렬되지 않은 값에서 가져와서 
-void selectionSort(vector<int> &v)     // 참조 : 복사하지 않고 원본에 접근
+// 버블 정렬
+// 인접한 두개를 비교
+void bubbleSort(vector<int> &v)
 {
-  // 최솟값 찾기
-  int ns = v.size();                   // 이렇게 해야 매번 계산하지 않음
-  for(int i=0; i < ns-1; ++i)          // 마지막 원소는 자동 정렬
+  int ns = v.size();
+  for (int i=0; i < ns-1; ++i)
   {
-    int min_idx = i;
-    for(int j= i+1; j < ns; ++j)
+    for(int j=0; j < ns-1-i; ++j)   // 버블 정렬은 1번이 끝나면 마지막 수가 무조건 정렬됨 
     {
-      if(v[j] < v[min_idx])
+      if (v[j] > v[j+1])
       {
-        min_idx = j;
+        swap(v[j], v[j+1]);
       }
     }
 
-    if(min_idx != i)
-    {
-      swap(v[i], v[min_idx]);
-    }
   }
 }
+
 
 
 int main()
@@ -44,7 +39,8 @@ int main()
     cin >> v[i];    // 인덱스를 이용해 직접 저장
   }
 
-  selectionSort(v);
+  // selectionSort(v);
+  bubbleSort(v);
   
   for(int n : v) cout << n << '\n';
   
