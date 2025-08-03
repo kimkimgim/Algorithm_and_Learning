@@ -2,30 +2,24 @@
 #include <vector>
 using namespace std;
 
-// 버블 정렬(조기종료)
-void bubbleSort(vector<int> &v)
+// 삽입정렬
+void insertSort(vector<int> &v)
 {
   int ns = v.size();
-  bool swapped = false;
 
-  for (int i=0; i < ns-1; ++i)
+  for (int i=0; i < ns; ++i)  // 모든 수를 검사해야하기 때문에 n-1은 아님
   {
-    for(int j=0; j < ns-1-i; ++j)   
+    int key = v[i];
+    int j = i - 1;
+
+    while(j >=0 && v[j] > key )
     {
-      if (v[j] > v[j+1])
-      {
-        swap(v[j], v[j+1]);
-        swapped = true;
-      }
+      v[j+1] = v[j];
+      j--;
     }
-    if(!swapped)
-    {
-      break;
-    }
+    v[j+1] = key;
   }
-
 }
-
 
 
 int main()
@@ -45,8 +39,8 @@ int main()
     cin >> v[i];    // 인덱스를 이용해 직접 저장
   }
 
-  // selectionSort(v);
-  bubbleSort(v);
+
+  insertSort(v);
   
   for(int n : v) cout << n << '\n';
   
