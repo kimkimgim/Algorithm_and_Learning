@@ -2,22 +2,28 @@
 #include <vector>
 using namespace std;
 
-// 버블 정렬
-// 인접한 두개를 비교
+// 버블 정렬(조기종료)
 void bubbleSort(vector<int> &v)
 {
   int ns = v.size();
+  bool swapped = false;
+
   for (int i=0; i < ns-1; ++i)
   {
-    for(int j=0; j < ns-1-i; ++j)   // 버블 정렬은 1번이 끝나면 마지막 수가 무조건 정렬됨 
+    for(int j=0; j < ns-1-i; ++j)   
     {
       if (v[j] > v[j+1])
       {
         swap(v[j], v[j+1]);
+        swapped = true;
       }
     }
-
+    if(!swapped)
+    {
+      break;
+    }
   }
+
 }
 
 
