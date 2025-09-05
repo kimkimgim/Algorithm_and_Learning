@@ -1,23 +1,37 @@
 #include<string>
+#include<stack>
 #include <iostream>
 
 using namespace std;
 
-bool solution(string s) {
+bool solution(string s)
+{
+    bool answer = true;
+
     
-    int count = 0;
-    for(char c: s)
+    stack <char> stack;
+    for(char c : s)
     {
-        if(c == '(') 
-        {
-            count++;
-        }
+        if(c == '(') stack.push(c);
         else if(c == ')')
         {
-            count--;
-            if (count < 0) return false;
+            if(stack.empty()) 
+            {
+                answer = false;
+                break;
+            }
+            else 
+            {
+                stack.pop();
+            }
         }
+            
     }
-    if (count == 0) return true;
-    return count = 0;  
+    if(!stack.empty())
+    {
+        answer = false;
+    }
+    cout << answer << endl;
+
+    return answer;
 }
