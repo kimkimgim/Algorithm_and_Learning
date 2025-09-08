@@ -1,17 +1,16 @@
-#include <string>
 #include <vector>
 
 using namespace std;
 
-vector<vector<int>> solution(vector<vector<int>> arr1, vector<vector<int>> arr2) {
+vector<vector<int>> solution(vector<vector<int>> arr1, vector<vector<int>>arr2)
+{
     vector<vector<int>> answer;
-    
-    // 저장 
-    answer.assign(arr1.size(), vector<int>(arr2[1].size(), 0));
+   //할당이 안되어있으면 인덱스 접근 불가
+    answer.assign(arr1.size(), vector<int>(arr2[0].size(), 0));
     
     for(int i=0; i<arr1.size(); ++i)
     {
-        for(int j = 0; j<arr2[0].size(); ++j)
+        for(int j=0; j<arr2[0].size(); ++j)
         {
             for(int k=0; k<arr2.size(); ++k)
             {
@@ -19,7 +18,7 @@ vector<vector<int>> solution(vector<vector<int>> arr1, vector<vector<int>> arr2)
             }
             
         }
+            
     }
-    
     return answer;
 }
