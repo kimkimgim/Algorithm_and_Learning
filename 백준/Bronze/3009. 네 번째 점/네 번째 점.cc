@@ -1,22 +1,16 @@
 #include <iostream>
-#include <algorithm>
-using namespace std;
 
-int x[3], y[3];
+using namespace std;
 
 int main()
 {
-    for (int i = 0; i < 3; ++i)
-    {
-        cin >> x[i] >> y[i];
-    }
+  int a1, a2, b1, b2, c1, c2;
+  cin >> a1 >> a2 >> b1 >> b2 >> c1 >> c2;
 
-    sort(x, x + 3);
-    sort(y, y + 3);
+  int d1 = a1^b1^c1;
+  int d2 = a2^b2^c2;
 
-    int nX = x[1] == x[0] ? x[2] : x[0];
-    int nY = y[1] == y[0] ? y[2] : y[0];
+  cout << d1 << " "<< d2 << endl;
 
-    cout << nX << " " << nY;
-    return 0;
+  return 0;
 }
