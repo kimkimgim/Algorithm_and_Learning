@@ -1,26 +1,25 @@
-#include <string>
-#include <vector> // 장동으로 메모리가 할당되는 배열
-#include <unordered_map> // 파이썬에서 딕셔너리와 비슷
+#include <vector>
+#include <unordered_map>
 
 using namespace std;
 
-string solution(vector<string> participant, vector<string> completion) {
-
-    unordered_map<string,int> not_completion;
-    // vector<string> answer;
-
-    for (string com : completion) not_completion[com]++;
+string solution(vector<string> participant, vector<string> completion)
+{
     
-    for (string name : participant)
+    unordered_map<string, int> parti;
+    
+    for(string p : participant) ++parti[p];
+    
+    for(string c : completion)
     {
-        if(not_completion[name] == 0 ){
-            // answer.push_back(name);
-            return name;
+        --parti[c];
+        if(parti[c] == 0)
+        {
+            parti.erase(parti.find(c));
         }
-        not_completion[name]--;
+        
     }
-    return "";
+
+        //end를 쓰지 않는이유는 문제에서 단한명만 남는다고 했기 때문
+    return parti.begin() -> first;
 }
-
-
-
