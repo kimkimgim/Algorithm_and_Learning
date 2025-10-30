@@ -1,16 +1,14 @@
 #include <string>
 #include <vector>
-#include <algorithm>
+
 using namespace std;
 
-// 이미 계산한 결과를 다시 쓰는 것.
-// bottom-up : 원본값 사라져도 상관없네
-// int dp[501][501];
-
 int solution(vector<vector<int>> triangle) {
+    int answer = 0;
     
-    int n = triangle.size();
-    for(int i = n-2; i >= 0; --i)
+    int size = triangle.size();
+    // 아래에서 올라가기
+    for(int i=size-2; i >=0; --i)
     {
         for(int j=0; j<triangle[i].size(); ++j)
         {
@@ -18,7 +16,6 @@ int solution(vector<vector<int>> triangle) {
         }
     }
     
-    int answer = triangle[0][0];
-    
+    answer = triangle[0][0];    
     return answer;
 }
