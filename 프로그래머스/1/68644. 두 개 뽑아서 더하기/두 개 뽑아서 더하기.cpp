@@ -1,30 +1,28 @@
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <iostream>
+#include <algorithm>
+
 using namespace std;
 
 vector<int> solution(vector<int> numbers) {
     vector<int> answer;
-
     
-    // 저장하기
     for(int i=0; i<numbers.size(); ++i)
     {
         for(int j=i+1; j<numbers.size(); ++j)
         {
-            int k = numbers[i] + numbers[j];
-            // cout << numbers[i] << "+" << numbers[j] << "=" << k << endl;
-            if(find(answer.begin(), answer.end(), k) == answer.end())
+            int h = numbers[i] + numbers[j];
+            auto it = find(answer.begin(), answer.end(), h);
+            if(it != answer.end()) continue;
+            else
             {
-                answer.push_back(k);
+                answer.push_back(h);
             }
         }
     }
-  
-    // 중복제거
+    
     sort(answer.begin(), answer.end());
-    answer.erase(unique(answer.begin(), answer.end()), answer.end());
     
     return answer;
 }
