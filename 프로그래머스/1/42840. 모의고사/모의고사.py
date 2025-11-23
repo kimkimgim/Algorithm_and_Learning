@@ -1,34 +1,36 @@
-# 정답확인
-def solution(answers):
-    a1 = [1,2,3,4,5]
-    a2 = [2,1,2,3,2,4,2,5]
-    a3 = [3,3,1,1,2,2,4,4,5,5]
+# 데코레이터 사용
 
-    score = []
+def check(func):
+    def wrapper(answer):
+        
+        a1 = [1,2,3,4,5]
+        a2 = [2,1,2,3,2,4,2,5]
+        a3 = [3,3,1,1,2,2,4,4,5,5]
 
-    person = [a1, a2, a3]
-    for i in person:
-        person_score = giveup(i, answers)
-        score.append(person_score)
-
-    answer = who_answer(score)
-    return answer
-
-# 패턴 확인
-def giveup(person, answers):
-    count = 0
-    for i in range (len(answers)):
-        if answers[i] == person[i%len(person)]:
-            count += 1
-    return count
+        arr_list = [a1, a2, a3]
+        
+        
+        # 최고/최다 점수를 맞은 사람 찾기
+        result = [func(a, answer) for a in arr_list]
 
 
-def who_answer(score):
+        max_cnt = max(result)
+        top_students = [i+1 for i, score in enumerate(result) if score == max_cnt]
+        return top_students
+    return wrapper
 
-    max_score = max(score)
-    fin_answer = []
-    for i in range(len(score)):
-        if score[i] == max_score:
-            fin_answer.append(i+1)
+@check
+def solution(a, answer):
+    # 학생 한 명당 점수 계산
+    cnt = 0
+    for i in range(len(answer)):
+        if(a[i%len(a)] == answer[i]):
+            cnt += 1
+    return cnt
 
-    return fin_answer
+if __name__ == "__main__":
+    
+    answer = list(map(int, input().split()))
+    
+    result = solution(answer)
+    print(result)
