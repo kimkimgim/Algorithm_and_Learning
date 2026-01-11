@@ -5,21 +5,21 @@ using namespace std;
 
 string solution(vector<string> participant, vector<string> completion)
 {
+    unordered_map<string, int> ph;
+    // 모든 참가자 추가
+    for (int i = 0; i < participant.size(); i++)
+        ph[participant[i]]++;
     
-    unordered_map<string, int> parti;
+    // 완주하지 못한 선수 빼기
+    for (int i = 0; i < completion.size(); i++) {
+        ph[completion[i]]--;
+
+ 
+    if (ph[completion[i]] == 0)
+        ph.erase(ph.find(completion[i]));
+
     
-    for(string p : participant) ++parti[p];
-    
-    for(string c : completion)
-    {
-        --parti[c];
-        if(parti[c] == 0)
-        {
-            parti.erase(parti.find(c));
-        }
-        
     }
 
-        //end를 쓰지 않는이유는 문제에서 단한명만 남는다고 했기 때문
-    return parti.begin() -> first;
+    return ph.begin() -> first;
 }
