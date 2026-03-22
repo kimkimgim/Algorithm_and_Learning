@@ -1,26 +1,19 @@
 #include <iostream>
+#include <algorithm>
 #include <vector>
+#include <queue>
 
 using namespace std;
 
-// 좌표가 도움이 안됨 왜? 층단이로 돌려야하기 때문에
-// int dir()
-// {           // 상 우 하 좌
-//   int dx[4] = {1, 0, -1, 0};
-//   int dy[4] = {0, 1, 0, -1};
-  
-//   return ;
-// }
+int n,m,r;
+
 
 int main()
 {
-  
-  ios::sync_with_stdio(false);
-  cin.tie(nullptr);
-
-  int n, m, r;
   cin >> n >> m >> r;
+
   vector<vector<int>> arr(n, vector<int>(m));
+  vector<vector<int>> newarr(n, vector<int>(m));
 
   for(int i=0; i<n; ++i)
   {
@@ -30,62 +23,97 @@ int main()
     }
   }
 
-  // x 값에 -1 을해서 배열 돌리기
-  // 단 끝에 다다랐을 경우 x값 증가혹은 감소 y값 증가 혹은감소
+  int layer = min(n,m) / 2;
 
-
-  // 어디가 안되는거야? 지금 처번째 돌리고 그다음돌릴때 모서리 부분 범위를 어떻게 줘야하는거지? 
-  // 두번째줄이다라는걸 어떻게 x = 2 이면 되는거 잖아? 오? 
-  // 2일경우 양끝이 아니면 되고
-  // 3일 경우 끝> 아 근데 이건 몇개냐에 따라 다른데
-  int layers = min(n, m) / 2;
-
-
-  // 4층일경우 2층 까지 
-  for(int l=0; l<layers; ++l)
+  for(int k=0; k<layer; ++k)
   {
-    vector<int> v;
+    // 고정된 경계값
+    // 행 고정 열 감소
+    int top = k;
 
-    // 위 (좌→우)(꼭지점 양쪽 포함)
-    for (int j = l; j < m - l; j++) v.push_back(arr[l][j]);
-    // 오른쪽 (위→아래)
-    for (int i = l + 1; i < n - l - 1; i++) v.push_back(arr[i][m - l - 1]);
-    // 아래 (우→좌)(꼭지점 양쪽 포함)
-    for (int j = m - l - 1; j >= l; j--) v.push_back(arr[n - l - 1][j]);
-    // 왼쪽 (아래→위)
-    for (int i = n - l - 2; i > l; i--) v.push_back(arr[i][l]);
+    // 열 고정 행 감소
+    int left = k;
+
+    // 행 고정 열 증가
+    int bottom = n-k-1;
+
+    // 열 고정 행 감소
+    int right = m-k-1;
 
 
-    //회전
-    int len = v.size();
-    int rot = r % len;
+    // 일자로 나열했을때 pop이 쉽기 때문에 앞쪽을 뺴야하기 때문에
+    // 순서는 위 오른쪽 아래 왼쪽
 
-    int idx = 0;
-
-    
-    // 위
-    for (int j = l; j < m - l; j++)
-        arr[l][j] = v[(idx++ + rot) % len];
-    // 오른쪽
-    for (int i = l + 1; i < n - l - 1; i++)
-        arr[i][m - l - 1] = v[(idx++ + rot) % len];
-    // 아래
-    for (int j = m - l - 1; j >= l; j--)
-        arr[n - l - 1][j] = v[(idx++ + rot) % len];
-    // 왼쪽
-    for (int i = n - l - 2; i > l; i--)
-        arr[i][l] = v[(idx++ + rot) % len];
-
-  }
-  
-  for(int i =0; i<n; i++)
-  {
-    for(int j=0; j<m; j++)
+    queue<int> temp;
+    // 위( x 증, y 감소)
+    for(int j=left; j<right; ++j)
     {
-      cout << arr[i][j] << " ";
+      temp.push(arr[top][j]);
     }
-    cout << "\n";
+
+    // 오른쪽 (x 증가, y 고정)
+    for(int i=top; i<bottom; ++i)
+    {
+      temp.push(arr[i][right]);
+    }
+
+    // 아래 (x 고정, y 감소)
+    for(int j=right; j>left; --j)
+    {
+      temp.push(arr[bottom][j]);
+    }
+
+    // 왼쪽 (x 감소, y 고정)
+    for(int i=bottom; i>top; --i)
+    {
+      temp.push(arr[i][left]);
+    }
+
+    for(int i=0; i<r; ++i)
+    {
+      int a = temp.front();
+      temp.pop();
+      temp.push(a);
+    }
+
+
+    // 다시 넣기
+    for(int j=left; j<right; ++j)
+    {
+      newarr[top][j] = temp.front();
+      temp.pop();
+    }
+
+    // 오른쪽 (x 증가, y 고정)
+    for(int i=top; i<bottom; ++i)
+    {
+      newarr[i][right] = temp.front();
+      temp.pop();
+    }
+
+    // 아래 (x 고정, y 감소)
+    for(int j=right; j>left; --j)
+    {
+      newarr[bottom][j] = temp.front();
+      temp.pop();
+    }
+
+    // 왼쪽 (x 감소, y 고정)
+    for(int i=bottom; i>top; --i)
+    {
+      newarr[i][left] = temp.front();
+      temp.pop();
+    }
+
   }
 
+  for(int i=0; i<n; ++i)
+  {
+    for(int j=0; j<m; ++j)
+    {
+      cout << newarr[i][j] << ' ';
+    }
+    cout << '\n';
+  }
   return 0;
 }
