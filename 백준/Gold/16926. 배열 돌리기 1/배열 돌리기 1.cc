@@ -69,7 +69,14 @@ int main()
       temp.push(arr[i][left]);
     }
 
-    for(int i=0; i<r; ++i)
+    // 시간 초과 가능성이 큼 
+    // r 할때 10억이면 r 만큼 회전하기 때문
+    // 제자리로 돌아오는 경우 불필요하게 계산 x
+
+    int size = temp.size();
+    int rotate = r % size;
+
+    for(int i=0; i<rotate; ++i)
     {
       int a = temp.front();
       temp.pop();
