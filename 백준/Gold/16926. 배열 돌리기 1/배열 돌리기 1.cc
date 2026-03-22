@@ -23,6 +23,8 @@ int main()
     }
   }
 
+  newarr = arr;
+  
   int layer = min(n,m) / 2;
 
   for(int k=0; k<layer; ++k)
